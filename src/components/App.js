@@ -1,14 +1,26 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import AppRouter from "components/Router";
 import { authService } from "fBase";
 
 function App() {
-  console.log(authService)
-  console.log(authService.currentUser)
-  const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
+  const [ init, setInit] = useState(false);
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  console.log(`currentUser ${authService.currentUser}`)
+  console.log(isLoggedIn)
+  useEffect(() => {
+    authService.onAuthStateChanged(user => { 
+      console.log(`user ${user}`)
+      if(user){
+        setIsLoggedIn(true);
+      } else{
+        setIsLoggedIn(false);
+      }
+      setInit(true);
+    })
+  }, [])
   return (
     <Fragment>
-      <AppRouter isLoggedIn={isLoggedIn} />
+      {init ? <AppRouter isLoggedIn={isLoggedIn} /> : "Initialzing..."}
       <footer>&copy; {new Date().getFullYear()} Nwiiter</footer>
     </Fragment>
   );

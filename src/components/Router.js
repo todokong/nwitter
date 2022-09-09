@@ -2,18 +2,23 @@ import React, { Fragment, useState } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Auth from "../routers/Auth";
 import Home from "../routers/Home";
+import Profile from "../routers/Profile";
+import Navigation from "components/navigation";
 
 const AppRouter = ({isLoggedIn}) => {
-    // const [isLoggedIn, setIsLoggedIn] = useState();
     return (
         <Router>
+            {isLoggedIn && <Navigation />}
             <Routes>
                 {isLoggedIn ? (
-                <Fragment>
+                <>
                     <Route path="/" element={<Home />} />
-                </Fragment>
+                    <Route path="/profile" element={<Profile />} />
+                </>
                 ) : (
-                <Route path="/" element={<Auth />} />
+                <>
+                    <Route path="/" element={<Auth />} />
+                </>
                 )}
             </Routes>
         </Router>
